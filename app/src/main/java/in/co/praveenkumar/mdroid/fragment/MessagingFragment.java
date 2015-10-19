@@ -4,6 +4,7 @@ import in.co.praveenkumar.R;
 import in.co.praveenkumar.mdroid.helper.AppInterface.UserIdInterface;
 import in.co.praveenkumar.mdroid.helper.ApplicationClass;
 import in.co.praveenkumar.mdroid.helper.ImageDecoder;
+import in.co.praveenkumar.mdroid.helper.ImageLoader;
 import in.co.praveenkumar.mdroid.helper.LetterColor;
 import in.co.praveenkumar.mdroid.helper.Param;
 import in.co.praveenkumar.mdroid.helper.SessionSetting;
@@ -28,6 +29,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.Html;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -234,22 +237,24 @@ public class MessagingFragment extends Fragment implements OnRefreshListener {
 				viewHolder.userimage.setBackgroundColor(LetterColor
 						.of(firstChar));
 
-				// Set message after trimming html special chars
+				// Get message text as html
 				msg = messages.get(position).getText();
-				msg = (msg == null) ? "" : Html.fromHtml(msg).toString().trim();
-				viewHolder.message.setText(msg);
 				break;
 			case TYPE_MESSAGE_OUT:
-				// Set message after trimming html special chars
+				// Get message text as html
 				msg = messages.get(position).getText();
-				msg = (msg == null) ? "" : Html.fromHtml(msg).toString().trim();
-				viewHolder.message.setText(msg);
 
 				// Set user image
 				if (loginUserImage != null)
 					viewHolder.userIcon.setImageBitmap(loginUserImage);
 				break;
 			}
+            // Set text
+            viewHolder.message.setText(Html
+                    .fromHtml(msg, new ImageLoader(context, viewHolder.message), null));
+
+			// Enable links as clickable
+			viewHolder.message.setMovementMethod(LinkMovementMethod.getInstance());
 
 			return convertView;
 		}

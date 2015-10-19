@@ -2,6 +2,7 @@ package in.co.praveenkumar.mdroid.fragment;
 
 import in.co.praveenkumar.R;
 import in.co.praveenkumar.mdroid.helper.AppInterface.DiscussionIdInterface;
+import in.co.praveenkumar.mdroid.helper.ImageLoader;
 import in.co.praveenkumar.mdroid.helper.LetterColor;
 import in.co.praveenkumar.mdroid.helper.SessionSetting;
 import in.co.praveenkumar.mdroid.helper.TimeFormat;
@@ -21,6 +22,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,8 +34,10 @@ import android.widget.TextView;
 
 public class PostFragment extends Fragment implements OnRefreshListener {
 	private final String DEBUG_TAG = "PostFragment";
+
 	PostListAdapter postListAdapter;
 	SessionSetting session;
+
 	int discussionid = 0;
 	List<MoodlePost> mPosts;
 	LinearLayout postsEmptyLayout;
@@ -146,13 +150,11 @@ public class PostFragment extends Fragment implements OnRefreshListener {
 			viewHolder.postlastmodified.setText(TimeFormat.getNiceTime(mPosts
 					.get(position).getModified()));
 
-			// Post content. Could be HTML. So, make it plain text first.
+			// Post content as HTML & links clickable
 			String message = mPosts.get(position).getMessage();
-			if (message == null)
-				message = "";
-			else
-				message = Html.fromHtml(message).toString().trim();
-			viewHolder.postcontent.setText(message);
+			viewHolder.postcontent.setText(
+                    Html.fromHtml(message, new ImageLoader(context, viewHolder.postcontent), null));
+			viewHolder.postcontent.setMovementMethod(LinkMovementMethod.getInstance());
 
 			// Author image color and value
 			String authorName = mPosts.get(position).getUserfullname();
