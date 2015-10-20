@@ -29,6 +29,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.games.appcontent.MultiDataBufferRef;
+
 public class CourseFragment extends Fragment implements OnRefreshListener {
 	/**
 	 * List all courses in Moodle site
@@ -272,6 +274,9 @@ public class CourseFragment extends Fragment implements OnRefreshListener {
 
 		@Override
 		protected Boolean doInBackground(String... params) {
+//			Intent intt = new Intent(getContext(),MDroidService.class);
+//			intt.setAction(MDroidService.ACTION_ONLY_LEVEL);
+//			getContext().startService(intt);
 			CourseSyncTask cs = new CourseSyncTask(session.getmUrl(),
 					session.getToken(), session.getCurrentSiteId());
 			if (cs.syncUserCourses())

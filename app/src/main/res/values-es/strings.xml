@@ -126,4 +126,6 @@
   <string name="donations_already_purchased">Ya lo  compraste!</string>
   <string name="donations_purchase_failed">La compra ha fallador, por favor intentalo de nuevo!</string>
   <string name="banner_ad_unit_id">CA-app-pub-5596738936514245/8048848210</string>
+  <string name="msg_xp">XP: %s</string>
+  <string name="msg_level">Nivel %s</string>
 </resources>

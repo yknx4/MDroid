@@ -1,435 +1,278 @@
 package in.co.praveenkumar.mdroid.model;
 
-import java.util.ArrayList;
-
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
+import java.util.ArrayList;
 
-public class MoodleCourse extends SugarRecord<MoodleCourse> {
-
-	// since id is a reserved field in SugarRecord
-	@SerializedName("id")
-	int courseid;
-
-	@SerializedName("shortname")
-	String shortname;
-
+public class MoodleCourse
+		extends SugarRecord<MoodleCourse>
+{
 	@SerializedName("categoryid")
 	int categoryid;
-
 	@SerializedName("categorysortorder")
 	int categorysortorder;
-
-	@SerializedName("fullname")
-	String fullname;
-
-	@SerializedName("idnumber")
-	String idnumber;
-
-	@SerializedName("summary")
-	String summary;
-
-	@SerializedName("summaryformat")
-	int summaryformat;
-
+	@SerializedName("completionnotify")
+	int completionnotify;
+	@SerializedName("courseformatoptions")
+	@Ignore
+	ArrayList<MoodleCourseFormatOption> courseformatoptions;
+	@SerializedName("id")
+	int courseid;
+	@SerializedName("debuginfo")
+	@Ignore
+	String debuginfo;
+	@SerializedName("defaultgroupingid")
+	int defaultgroupingid;
+	@SerializedName("enablecompletion")
+	boolean enablecompletion;
+	@SerializedName("errorcode")
+	@Ignore
+	String errorcode;
+	@SerializedName("exception")
+	@Ignore
+	String exception;
+	@SerializedName("forcetheme")
+	String forcetheme;
 	@SerializedName("format")
 	String format;
-
-	@SerializedName("showgrades")
-	int showgrades;
-
-	@SerializedName("newsitems")
-	int newsitems;
-
-	@SerializedName("startdate")
-	int startdate;
-
-	@SerializedName("numsections")
-	int numsections;
-
+	@SerializedName("fullname")
+	String fullname;
+	@SerializedName("groupmode")
+	int groupmode;
+	@SerializedName("groupmodeforce")
+	int groupmodeforce;
+	@SerializedName("hiddensections")
+	int hiddensections;
+	@SerializedName("idnumber")
+	String idnumber;
+	Boolean isFavCourse = Boolean.valueOf(false);
+	Boolean isUserCourse = Boolean.valueOf(false);
+	@SerializedName("lang")
+	String lang;
 	@SerializedName("maxbytes")
 	int maxbytes;
-
+	@SerializedName("message")
+	@Ignore
+	String message;
+	@SerializedName("newsitems")
+	int newsitems;
+	@SerializedName("numsections")
+	int numsections;
+	@SerializedName("shortname")
+	String shortname;
+	@SerializedName("showgrades")
+	boolean showgrades;
 	@SerializedName("showreports")
 	int showreports;
-
+	long siteid;
+	@SerializedName("startdate")
+	int startdate;
+	@SerializedName("summary")
+	String summary;
+	@SerializedName("summaryformat")
+	int summaryformat;
+	@SerializedName("timecreated")
+	int timecreated;
+	@SerializedName("timemodified")
+	int timemodified;
 	@SerializedName("visible")
 	int visible;
 
-	@SerializedName("hiddensections")
-	int hiddensections;
+	public MoodleCourse() {}
 
-	@SerializedName("groupmode")
-	int groupmode;
-
-	@SerializedName("groupmodeforce")
-	int groupmodeforce;
-
-	@SerializedName("defaultgroupingid")
-	int defaultgroupingid;
-
-	@SerializedName("timecreated")
-	int timecreated;
-
-	@SerializedName("timemodified")
-	int timemodified;
-
-	@SerializedName("enablecompletion")
-	int enablecompletion;
-
-	@SerializedName("completionnotify")
-	int completionnotify;
-
-	@SerializedName("lang")
-	String lang;
-
-	@SerializedName("forcetheme")
-	String forcetheme;
-
-	@Ignore
-	@SerializedName("courseformatoptions")
-	ArrayList<MoodleCourseFormatOption> courseformatoptions;
-
-	// Errors. Not to be stored in sql db.
-	@Ignore
-	@SerializedName("exception")
-	String exception;
-
-	@Ignore
-	@SerializedName("errorcode")
-	String errorcode;
-
-	@Ignore
-	@SerializedName("message")
-	String message;
-
-	@Ignore
-	@SerializedName("debuginfo")
-	String debuginfo;
-
-	// Relational fields
-	long siteid;
-	Boolean isUserCourse = false;
-	Boolean isFavCourse = false;
-
-	public MoodleCourse() {
-
+	public MoodleCourse(long paramLong)
+	{
+		this.siteid = paramLong;
 	}
 
-	/**
-	 * siteid is unique for a moodle address + user combination
-	 * 
-	 * @param siteid
-	 *            siteid of the Moodle account to which this course belongs to.
-	 */
-	public MoodleCourse(long siteid) {
-		this.siteid = siteid;
+	public int getCategoryid()
+	{
+		return this.categoryid;
 	}
 
-	public int getCourseid() {
-		return courseid;
+	public int getCategorysortorder()
+	{
+		return this.categorysortorder;
 	}
 
-	public String getShortname() {
-		return shortname;
+	public int getCompletionnotify()
+	{
+		return this.completionnotify;
 	}
 
-	public int getCategoryid() {
-		return categoryid;
+	public ArrayList<MoodleCourseFormatOption> getCourseformatoptions()
+	{
+		return this.courseformatoptions;
 	}
 
-	/**
-	 * sort order into the category
-	 * 
-	 * @return
-	 */
-	public int getCategorysortorder() {
-		return categorysortorder;
+	public int getCourseid()
+	{
+		return this.courseid;
 	}
 
-	public String getFullname() {
-		return fullname;
+	public String getDebuginfo()
+	{
+		return this.debuginfo;
 	}
 
-	public String getIdnumber() {
-		return idnumber;
+	public int getDefaultgroupingid()
+	{
+		return this.defaultgroupingid;
 	}
 
-	public String getSummary() {
-		return summary;
+	public boolean getEnablecompletion()
+	{
+		return this.enablecompletion;
 	}
 
-	/**
-	 * summary format (1 = HTML, 0 = MOODLE, 2 = PLAIN or 4 = MARKDOWN)
-	 * 
-	 * @return
-	 */
-	public int getSummaryformat() {
-		return summaryformat;
+	public String getErrorcode()
+	{
+		return this.errorcode;
 	}
 
-	/**
-	 * course format: weeks, topics, social, site,..
-	 * 
-	 * @return
-	 */
-	public String getFormat() {
-		return format;
+	public String getException()
+	{
+		return this.exception;
 	}
 
-	/**
-	 * 1 if grades are shown, otherwise 0
-	 * 
-	 * @return
-	 */
-	public int getShowgrades() {
-		return showgrades;
+	public String getForcetheme()
+	{
+		return this.forcetheme;
 	}
 
-	/**
-	 * number of recent items appearing on the course page
-	 * 
-	 * @return
-	 */
-	public int getNewsitems() {
-		return newsitems;
+	public String getFormat()
+	{
+		return this.format;
 	}
 
-	/**
-	 * timestamp when the course start
-	 * 
-	 * @return
-	 */
-	public int getStartdate() {
-		return startdate;
+	public String getFullname()
+	{
+		return this.fullname;
 	}
 
-	/**
-	 * (deprecated, use courseformatoptions) number of weeks/topics
-	 * 
-	 * @return
-	 */
-	public int getNumsections() {
-		return numsections;
+	public int getGroupmode()
+	{
+		return this.groupmode;
 	}
 
-	/**
-	 * largest size of file that can be uploaded into the course
-	 * 
-	 * @return
-	 */
-	public int getMaxbytes() {
-		return maxbytes;
+	public int getGroupmodeforce()
+	{
+		return this.groupmodeforce;
 	}
 
-	/**
-	 * are activity report shown (yes = 1, no =0)
-	 * 
-	 * @return
-	 */
-	public int getShowreports() {
-		return showreports;
+	public int getHiddensections()
+	{
+		return this.hiddensections;
 	}
 
-	/**
-	 * 1: available to student, 0:not available
-	 * 
-	 * @return
-	 */
-	public int getVisible() {
-		return visible;
+	public String getIdnumber()
+	{
+		return this.idnumber;
 	}
 
-	/**
-	 * (deprecated, use courseformatoptions) How the hidden sections in the
-	 * course are displayed to students
-	 * 
-	 * @return
-	 */
-	public int getHiddensections() {
-		return hiddensections;
+	public Boolean getIsFavCourse()
+	{
+		return this.isFavCourse;
 	}
 
-	/**
-	 * no group, separate, visible
-	 * 
-	 * @return
-	 */
-	public int getGroupmode() {
-		return groupmode;
+	public Boolean getIsUserCourse()
+	{
+		return this.isUserCourse;
 	}
 
-	/**
-	 * 1: yes, 0: no
-	 * 
-	 * @return
-	 */
-	public int getGroupmodeforce() {
-		return groupmodeforce;
+	public String getLang()
+	{
+		return this.lang;
 	}
 
-	/**
-	 * default grouping id
-	 * 
-	 * @return
-	 */
-	public int getDefaultgroupingid() {
-		return defaultgroupingid;
+	public int getMaxbytes()
+	{
+		return this.maxbytes;
 	}
 
-	/**
-	 * timestamp when the course have been created
-	 * 
-	 * @return
-	 */
-	public int getTimecreated() {
-		return timecreated;
+	public String getMessage()
+	{
+		return this.message;
 	}
 
-	/**
-	 * timestamp when the course have been modified
-	 * 
-	 * @return
-	 */
-	public int getTimemodified() {
-		return timemodified;
+	public int getNewsitems()
+	{
+		return this.newsitems;
 	}
 
-	/**
-	 * Enabled, control via completion and activity settings. Disbaled, not
-	 * shown in activity settings.
-	 * 
-	 * @return
-	 */
-	public int getEnablecompletion() {
-		return enablecompletion;
+	public int getNumsections()
+	{
+		return this.numsections;
 	}
 
-	/**
-	 * 1: yes 0: no
-	 * 
-	 * @return
-	 */
-	public int getCompletionnotify() {
-		return completionnotify;
+	public String getShortname()
+	{
+		return this.shortname;
 	}
 
-	/**
-	 * forced course language
-	 * 
-	 * @return
-	 */
-	public String getLang() {
-		return lang;
+	public boolean getShowgrades()
+	{
+		return this.showgrades;
 	}
 
-	/**
-	 * name of the force theme
-	 * 
-	 * @return
-	 */
-	public String getForcetheme() {
-		return forcetheme;
+	public int getShowreports()
+	{
+		return this.showreports;
 	}
 
-	/**
-	 * additional options for particular course format
-	 * 
-	 * @return
-	 */
-	public ArrayList<MoodleCourseFormatOption> getCourseformatoptions() {
-		return courseformatoptions;
+	public long getSiteid()
+	{
+		return this.siteid;
 	}
 
-	/**
-	 * Exception occurred while retrieving
-	 * 
-	 * @return
-	 */
-	public String getException() {
-		return exception;
+	public int getStartdate()
+	{
+		return this.startdate;
 	}
 
-	/**
-	 * Errorcode of error occurred while retrieving
-	 * 
-	 * @return
-	 */
-	public String getErrorcode() {
-		return errorcode;
+	public String getSummary()
+	{
+		return this.summary;
 	}
 
-	/**
-	 * Message of error occurred while retrieving
-	 * 
-	 * @return
-	 */
-	public String getMessage() {
-		return message;
+	public int getSummaryformat()
+	{
+		return this.summaryformat;
 	}
 
-	/**
-	 * Debug info on the error occurred
-	 * 
-	 * @return
-	 */
-	public String getDebuginfo() {
-		return debuginfo;
+	public int getTimecreated()
+	{
+		return this.timecreated;
 	}
 
-	/**
-	 * Get if this course is enrolled by current user
-	 * 
-	 * @return
-	 */
-	public Boolean getIsUserCourse() {
-		return isUserCourse;
+	public int getTimemodified()
+	{
+		return this.timemodified;
 	}
 
-	/**
-	 * Set if this course is enrolled by current user
-	 * 
-	 * @return
-	 */
-	public void setIsUserCourse(Boolean isUserCourse) {
-		this.isUserCourse = isUserCourse;
+	public int getVisible()
+	{
+		return this.visible;
 	}
 
-	/**
-	 * Get favourite status course in the app
-	 * 
-	 * @return
-	 */
-	public Boolean getIsFavCourse() {
-		return isFavCourse;
+	public void setIsFavCourse(Boolean paramBoolean)
+	{
+		this.isFavCourse = paramBoolean;
 	}
 
-	/**
-	 * Set favourite status course in the app
-	 * 
-	 * @return
-	 */
-	public void setIsFavCourse(Boolean isFavCourse) {
-		this.isFavCourse = isFavCourse;
+	public void setIsUserCourse(Boolean paramBoolean)
+	{
+		this.isUserCourse = paramBoolean;
 	}
 
-	/**
-	 * Get the siteid of this course
-	 * 
-	 * @return
-	 */
-	public long getSiteid() {
-		return siteid;
+	public void setSiteid(long paramLong)
+	{
+		this.siteid = paramLong;
 	}
 
-	/**
-	 * set the site id of this course
-	 * 
-	 * @param siteid
-	 */
-	public void setSiteid(long siteid) {
-		this.siteid = siteid;
+	public String toString()
+	{
+		return "MoodleCourse{courseid=" + this.courseid + ", categoryid=" + this.categoryid + ", message='" + this.message + '\'' + ", debuginfo='" + this.debuginfo + '\'' + ", fullname='" + this.fullname + '\'' + '}';
 	}
-
 }

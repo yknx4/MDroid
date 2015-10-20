@@ -6,8 +6,10 @@ import in.co.praveenkumar.mdroid.activity.WebservicesoffActivity;
 import in.co.praveenkumar.mdroid.helper.SessionSetting;
 import in.co.praveenkumar.mdroid.model.MoodleSiteInfo;
 import in.co.praveenkumar.mdroid.model.MoodleToken;
+import in.co.praveenkumar.mdroid.model.MoodleUserLevelXp;
 import in.co.praveenkumar.mdroid.moodlerest.MoodleRestSiteInfo;
 import in.co.praveenkumar.mdroid.moodlerest.MoodleRestToken;
+import in.co.praveenkumar.mdroid.moodlerest.MoodleRestUserLevelXP;
 import in.co.praveenkumar.mdroid.view.LoginStatusViewHolder;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +28,8 @@ public class LoginTask extends AsyncTask<String, String, Boolean> {
 	SessionSetting session;
 	Context context;
 	Boolean webservices = true;
+
+	MoodleUserLevelXp userlxp = new MoodleUserLevelXp();
 
 	// Widgets
 	LoginStatusViewHolder progressViews;
@@ -193,6 +197,14 @@ public class LoginTask extends AsyncTask<String, String, Boolean> {
         siteInfo.setToken(token);
 		siteInfo.save();
 		session.setCurrentSiteId(siteInfo.getId());
+
+		MoodleRestUserLevelXP localMoodleRestUserLevelXP = new MoodleRestUserLevelXP(this.mUrl, this.token);
+		this.userlxp.setUserid(this.siteInfo.getUserid());
+		this.userlxp.setLevel(localMoodleRestUserLevelXP.getLevel(1));
+		this.userlxp.setXp(localMoodleRestUserLevelXP.getExperience(1));
+		this.userlxp.save();
+
+
 
 		publishProgress("\n" + context.getString(R.string.login_prog_welcome)
 				+ " " + siteInfo.getFullname() + "!\n");

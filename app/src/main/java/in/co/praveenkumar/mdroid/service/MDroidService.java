@@ -7,6 +7,8 @@ import in.co.praveenkumar.mdroid.model.MoodleCourse;
 import in.co.praveenkumar.mdroid.model.MoodleDiscussion;
 import in.co.praveenkumar.mdroid.model.MoodleForum;
 import in.co.praveenkumar.mdroid.model.MoodleSiteInfo;
+import in.co.praveenkumar.mdroid.model.MoodleUserLevelXp;
+import in.co.praveenkumar.mdroid.moodlerest.MoodleRestUserLevelXP;
 import in.co.praveenkumar.mdroid.task.ContactSyncTask;
 import in.co.praveenkumar.mdroid.task.CourseContentSyncTask;
 import in.co.praveenkumar.mdroid.task.DiscussionSyncTask;
@@ -19,7 +21,9 @@ import in.co.praveenkumar.mdroid.task.UserSyncTask;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -34,8 +38,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresPermission;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 public class MDroidService extends Service {
 	final String DEBUG_TAG = "MDroid Services";
@@ -45,17 +52,21 @@ public class MDroidService extends Service {
 	 */
 	Boolean forceCheck = false;
 	Boolean notifications = true;
+	String action = "";
 	long siteid = -1;
 	int courseid = -1;
 	protected int startId;
 
 	SharedPreferences settings;
 
+
+	public static final String ACTION_ONLY_LEVEL = "ACTION_ONLY_LEVEL";
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(DEBUG_TAG, "Started service!");
 		this.startId = startId;
 		settings = PreferenceManager.getDefaultSharedPreferences(this);
+
 
 		// Check if the service started from NotificationActivity
 		Bundle extras = intent.getExtras();
@@ -66,8 +77,13 @@ public class MDroidService extends Service {
 			courseid = extras.getInt("courseid", -1);
 		}
 
+		if(Objects.equals(intent.getAction(), ACTION_ONLY_LEVEL)){
+			new ContentCheckerBg().execute(intent.getAction());
+		}
 		// Check for new contents
-		new ContentCheckerBg().execute("");
+		else{
+			new ContentCheckerBg().execute("");
+		}
 
 		return Service.START_NOT_STICKY;
 	}
@@ -117,6 +133,9 @@ public class MDroidService extends Service {
 			// Loop through all sites for checking contents
 			for (int i = 0; i < mSites.size(); i++) {
 				site = mSites.get(i);
+
+				syncLevel(site);
+				if(!credentials[0].isEmpty() && credentials[0].equals(ACTION_ONLY_LEVEL)) return true;
 
 				List<MoodleCourse> mCourses = new ArrayList<MoodleCourse>();
 
@@ -176,6 +195,61 @@ public class MDroidService extends Service {
 			}
 
 			return true;
+		}
+
+		private void syncLevel(MoodleSiteInfo site){
+			Log.d(this.getClass().getSimpleName(),"Updating Level");
+			int level = -1;
+			int exp = -1;
+			long userid = site.getUserid();
+
+			MoodleUserLevelXp ulv = new MoodleUserLevelXp();
+
+			List<MoodleUserLevelXp> lvl =  MoodleUserLevelXp.find(MoodleUserLevelXp.class, "userid = ?", String.valueOf(userid));
+			if(lvl.size()>0){
+				ulv = lvl.get(lvl.size()-1);
+				level = ulv.getLevel();
+				exp = ulv.getXp();
+			}
+
+
+			MoodleRestUserLevelXP localMoodleRestUserLevelXP = new MoodleRestUserLevelXP(site.getSiteurl(), site.getToken());
+			int newlevel = localMoodleRestUserLevelXP.getLevel(1);
+			int newExp = localMoodleRestUserLevelXP.getExperience(1);
+			if(level>0 && newlevel>level){
+//				Toast.makeText(getBaseContext(), "You've reached level: "+newlevel, Toast.LENGTH_SHORT).show();
+				Notification notification  = new NotificationCompat.Builder(getBaseContext())
+						.setCategory(Notification.CATEGORY_EVENT)
+						.setContentTitle("Level UP!")
+						.setContentText("You've reached level: " + newlevel)
+						.setPriority(NotificationCompat.PRIORITY_HIGH)
+						.setSmallIcon(R.mipmap.icon_launcher)
+						.setAutoCancel(true)
+						.setVisibility(NotificationCompat.VISIBILITY_PUBLIC).build();
+				NotificationManager notificationManager =
+						(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+				notificationManager.notify(0, notification );
+
+			}
+			if(exp>0 && newExp>exp){
+//				Toast.makeText(getBaseContext(), "You've got "+(newExp-exp)+" points of experience.", Toast.LENGTH_SHORT).show();
+				Notification notification  = new NotificationCompat.Builder(getBaseContext())
+						.setCategory(Notification.CATEGORY_EVENT)
+						.setContentTitle("Experiencie Gain!")
+						.setContentText("You've got "+(newExp-exp)+" points of experience.")
+						.setPriority(NotificationCompat.PRIORITY_HIGH)
+						.setSmallIcon(R.mipmap.icon_launcher)
+						.setAutoCancel(true)
+						.setVisibility(NotificationCompat.VISIBILITY_PUBLIC).build();
+				NotificationManager notificationManager =
+						(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+				notificationManager.notify(1, notification );
+			}
+			ulv = new MoodleUserLevelXp();
+			ulv.setUserid(site.getUserid());
+			ulv.setLevel(newlevel);
+			ulv.setXp(newExp);
+			ulv.save();
 		}
 
 		/**

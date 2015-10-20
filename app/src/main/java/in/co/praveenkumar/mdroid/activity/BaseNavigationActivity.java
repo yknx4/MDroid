@@ -4,13 +4,20 @@ import in.co.praveenkumar.R;
 import in.co.praveenkumar.mdroid.helper.AppInterface.DonationInterface;
 import in.co.praveenkumar.mdroid.helper.AppInterface.DrawerStateInterface;
 import in.co.praveenkumar.mdroid.helper.Param;
+import in.co.praveenkumar.mdroid.service.MDroidService;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -29,9 +36,16 @@ import com.anjlab.android.iab.v3.TransactionDetails;
  * @author Praveen Kumar Pendyala <praveen@praveenkumar.co.in>
  * 
  */
-public abstract class BaseNavigationActivity extends ActionBarActivity
+public abstract class BaseNavigationActivity extends AppCompatActivity
 		implements DrawerStateInterface, DonationInterface {
 	DrawerLayout mDrawerLayout;
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+	}
+
 	ActionBarDrawerToggle mDrawerToggle;
 	BillingProcessor billing;
 
@@ -71,6 +85,14 @@ public abstract class BaseNavigationActivity extends ActionBarActivity
 					public void onPurchaseHistoryRestored() {
 					}
 				});
+
+
+
+
+
+		Intent intent = new Intent(this, MDroidService.class);
+		intent.setAction(MDroidService.ACTION_ONLY_LEVEL);
+		startService(intent);
 	}
 
 	public void setUpDrawer() {

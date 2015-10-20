@@ -181,5 +181,7 @@
 
     <!-- AppBrowser Activity -->
     <string name="activity_appbrowser_autologin_info">Attempting auto login</string>
+    <string name="msg_xp">XP: %s</string>
+    <string name="msg_level">Level %s</string>
 
 </resources>

@@ -14,6 +14,7 @@ import in.co.praveenkumar.mdroid.helper.AppInterface.DrawerStateInterface;
 import in.co.praveenkumar.mdroid.helper.ImageDecoder;
 import in.co.praveenkumar.mdroid.helper.SessionSetting;
 import in.co.praveenkumar.mdroid.model.MoodleSiteInfo;
+import in.co.praveenkumar.mdroid.model.MoodleUserLevelXp;
 
 import java.io.File;
 import java.util.List;
@@ -45,6 +46,7 @@ public class LeftNavigationFragment extends Fragment {
 	ListView navListView;
 	List<MoodleSiteInfo> sites;
 	SessionSetting session;
+	List<MoodleUserLevelXp> levelsxps;
 
 	String[] moodleMenuItems = new String[] { "Courses", "Messaging",
 			"Contacts", "Calender", "Forums", "Notifications" };
@@ -71,6 +73,7 @@ public class LeftNavigationFragment extends Fragment {
 		// Get sites info
 		session = new SessionSetting(getActivity());
 		sites = MoodleSiteInfo.listAll(MoodleSiteInfo.class);
+		this.levelsxps = MoodleUserLevelXp.listAll(MoodleUserLevelXp.class);
 
 		final LeftNavListAdapter adapter = new LeftNavListAdapter(getActivity());
 		navListView.setAdapter(adapter);
@@ -84,8 +87,9 @@ public class LeftNavigationFragment extends Fragment {
 				case LeftNavListAdapter.TYPE_ACCOUNT:
 					session.setCurrentSiteId(sites.get(position).getId());
 					Intent i = new Intent(context, CourseActivity.class);
-					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-							| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+//							| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//
 					context.startActivity(i);
 					break;
 				case LeftNavListAdapter.TYPE_MOODLE_MENUITEM:
@@ -208,6 +212,8 @@ public class LeftNavigationFragment extends Fragment {
 							.findViewById(R.id.nav_user_image);
 					viewHolder.userselected = (ImageView) convertView
 							.findViewById(R.id.nav_user_selected);
+					viewHolder.playerxp = (TextView) convertView.findViewById(R.id.nav_playerexperience);
+					viewHolder.playerlevel = (TextView) convertView.findViewById(R.id.nav_playerlevel);
 					break;
 
 				case TYPE_MOODLE_MENUITEM:
@@ -249,6 +255,30 @@ public class LeftNavigationFragment extends Fragment {
 								+ sites.get(position).getId()));
 				if (userImage != null)
 					viewHolder.userimage.setImageBitmap(userImage);
+				long userid = sites.get(position).getUserid();
+				List<MoodleUserLevelXp> lvl =  MoodleUserLevelXp.find(MoodleUserLevelXp.class, "userid = ?", String.valueOf(userid));
+				if(lvl.size()>0){
+					MoodleUserLevelXp ulv = lvl.get(lvl.size()-1);
+					int level = ulv.getLevel();
+					int exp = ulv.getXp();
+
+
+					if(level>=0 && exp >=0) {
+						viewHolder.playerxp.setText(String.format(context.getString(R.string.msg_xp), String.valueOf(exp)));
+						viewHolder.playerlevel.setText(String.format(context.getString(R.string.msg_level), String.valueOf(level)));
+						viewHolder.playerlevel.setVisibility(View.VISIBLE);
+						viewHolder.playerxp.setVisibility(View.VISIBLE);
+						Log.d("THISAA", "XP: " + String.valueOf(exp));
+						Log.d("THISAA","LVL: " + String.valueOf(level));
+					}
+
+				}
+				else {
+					int s = MoodleUserLevelXp.listAll(MoodleUserLevelXp.class).size();
+					Log.d("NOPE","NOPE NOPE NOPE NOPE NOPE "+s);
+
+				}
+
 
 				// Show this as current account if it is
 				if (session.getCurrentSiteId() == sites.get(position).getId())
@@ -298,6 +328,8 @@ public class LeftNavigationFragment extends Fragment {
 		ImageView userimage;
 		TextView menuItemName;
 		ImageView menuItemIcon;
+		TextView playerlevel;
+		TextView playerxp;
 	}
 
 }
