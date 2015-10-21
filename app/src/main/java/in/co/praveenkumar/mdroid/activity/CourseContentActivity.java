@@ -1,5 +1,14 @@
 package in.co.praveenkumar.mdroid.activity;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.widget.Toast;
+
+import java.util.List;
+
 import in.co.praveenkumar.R;
 import in.co.praveenkumar.mdroid.fragment.CalenderFragment;
 import in.co.praveenkumar.mdroid.fragment.ContentFragment;
@@ -11,20 +20,11 @@ import in.co.praveenkumar.mdroid.helper.SessionSetting;
 import in.co.praveenkumar.mdroid.model.MoodleCourse;
 import in.co.praveenkumar.mdroid.view.SlidingTabLayout;
 
-import java.util.List;
-
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.widget.Toast;
-
 public class CourseContentActivity extends BaseNavigationActivity {
 	private int courseid;
 	private ViewPager viewPager;
-	private static final String[] TABS = { "Contents", "Forums", "Calendar",
-			"Participants" };
+	private final String[] TABS = {getString(R.string.tab_contents), getString(R.string.tab_forums), getString(R.string.tab_calendar),
+			getString(R.string.tab_participants)};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class CourseContentActivity extends BaseNavigationActivity {
 				"siteid = ? and courseid = ?", session.getCurrentSiteId() + "",
 				courseid + "");
 		if (dbCourses == null || dbCourses.size() == 0) {
-			Toast.makeText(this, "Course not found in database!",
+			Toast.makeText(this, R.string.error_not_found_in_db_course,
 					Toast.LENGTH_LONG).show();
 			return;
 		}

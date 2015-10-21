@@ -1,21 +1,10 @@
 package in.co.praveenkumar.mdroid.activity;
 
-import in.co.praveenkumar.R;
-import in.co.praveenkumar.mdroid.helper.AppInterface.DonationInterface;
-import in.co.praveenkumar.mdroid.helper.AppInterface.DrawerStateInterface;
-import in.co.praveenkumar.mdroid.helper.Param;
-import in.co.praveenkumar.mdroid.service.MDroidService;
-
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -26,6 +15,12 @@ import android.widget.Toast;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
+
+import in.co.praveenkumar.R;
+import in.co.praveenkumar.mdroid.helper.AppInterface.DonationInterface;
+import in.co.praveenkumar.mdroid.helper.AppInterface.DrawerStateInterface;
+import in.co.praveenkumar.mdroid.helper.Param;
+import in.co.praveenkumar.mdroid.service.MDroidService;
 
 /**
  * Extending this would implement a side navigation and billing capabilities
@@ -192,13 +187,7 @@ public abstract class BaseNavigationActivity extends AppCompatActivity
 
 	@Override
 	public Boolean isProUser() {
-		if (billing == null)
-			return false;
+		return true;
 
-		return billing.isPurchased(Param.BILLING_DONATION_PID)
-				|| billing.isPurchased(Param.BILLING_FEATURE_NOTIFICATIONS_PID)
-				|| billing.isPurchased(Param.BILLING_FEATURE_PARTICIPANTS_PID)
-				|| billing.isPurchased(Param.BILLING_FEATURE_SEARCH_PID)
-				|| billing.isPurchased(Param.BILLING_FEATURE_UPLOADS_PID);
 	}
 }

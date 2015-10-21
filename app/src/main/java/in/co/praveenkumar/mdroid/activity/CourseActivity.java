@@ -1,11 +1,6 @@
 package in.co.praveenkumar.mdroid.activity;
 
-import in.co.praveenkumar.R;
-import in.co.praveenkumar.mdroid.dialog.RateDialog;
-import in.co.praveenkumar.mdroid.fragment.CourseFragment;
-import in.co.praveenkumar.mdroid.helper.ApplicationClass;
-import in.co.praveenkumar.mdroid.helper.Param;
-import in.co.praveenkumar.mdroid.view.SlidingTabLayout;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -16,10 +11,21 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
+import in.co.praveenkumar.mdroid.dialog.RateDialog;
+import in.co.praveenkumar.mdroid.fragment.CourseFragment;
+import in.co.praveenkumar.mdroid.helper.ApplicationClass;
+import in.co.praveenkumar.mdroid.helper.Param;
+import in.co.praveenkumar.mdroid.view.SlidingTabLayout;
+
+import static in.co.praveenkumar.R.drawable;
+import static in.co.praveenkumar.R.id;
+import static in.co.praveenkumar.R.layout;
+import static in.co.praveenkumar.R.string;
+
 public class CourseActivity extends BaseNavigationActivity {
 	final int DIALOG_FREQ = 4;
 	private ViewPager viewPager;
-	private static final String[] TABS = { "MY COURSES", "FAVOURITE COURSES" };
+	private String[] TABS = {};
 	RateDialog mRateDialog;
 	SharedPreferences mSharedPrefs;
 	SharedPreferences.Editor mSharedPrefseditor;
@@ -28,25 +34,27 @@ public class CourseActivity extends BaseNavigationActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		TABS = new String[]{getString(string.tab_header), getString(string.tab_fav_courses)};
 
-		setContentView(R.layout.activity_course);
+
+		setContentView(layout.activity_course);
 		setUpDrawer();
 
 		// Send a tracker
 		((ApplicationClass) getApplication())
 				.sendScreen(Param.GA_SCREEN_COURSE);
 
-		getSupportActionBar().setTitle("Moodle Home");
-		getSupportActionBar().setIcon(R.drawable.ic_actionbar_icon);
+		getSupportActionBar().setTitle("Moodle home");
+		getSupportActionBar().setIcon(drawable.ic_actionbar_icon);
 
 		FragmentPagerAdapter mAdapter = new CourseTabsAdapter(
 				getSupportFragmentManager());
 
-		viewPager = (ViewPager) findViewById(R.id.course_pager);
+		viewPager = (ViewPager) findViewById(id.course_pager);
 		viewPager.setOffscreenPageLimit(2);
 		viewPager.setAdapter(mAdapter);
 
-		SlidingTabLayout mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
+		SlidingTabLayout mSlidingTabLayout = (SlidingTabLayout) findViewById(id.sliding_tabs);
 		mSlidingTabLayout.setViewPager(viewPager);
 
 		// Dialog related work

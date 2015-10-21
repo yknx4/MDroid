@@ -128,4 +128,59 @@
   <string name="banner_ad_unit_id">CA-app-pub-5596738936514245/8048848210</string>
   <string name="msg_xp">XP: %s</string>
   <string name="msg_level">Nivel %s</string>
+  <string name="msg_nocourses_here">No hay cursos</string>
+  <string name="activity_appbrowser_autologin_info">Intentando iniciar sesión automáticamente</string>
+  <string name="dialog_rate_later">Ahora no</string>
+  <string name="dialog_rate_signin">Evaluar ahora</string>
+  <string name="dialog_rate_desc">Te gustó? Quieres evaluar MDroid?</string>
+  <string name="login_error">Error</string>
+  <string name="login_errorcode">Código de error</string>
+  <string name="login_prog_loggingin">Iniciando Sesión</string>
+  <string name="login_prog_siteinfo_failed">No se pudo obtener la información del sitio</string>
+  <string name="login_prog_sync_contact">Sincronizando contactos</string>
+  <string name="login_prog_sync_course">Sincronizando cursos</string>
+  <string name="login_prog_sync_data">Sincronizando informacion</string>
+  <string name="login_prog_sync_done">Sincronización completada!</string>
+  <string name="login_prog_sync_failed">Sincronización Fallida!</string>
+  <string name="login_prog_sync_message">Sincronizando mensajes</string>
+  <string name="login_prog_token_failed">No se pudo obtener el Token!</string>
+  <string name="login_prog_welcome">Bienvenido</string>
+  <string name="login_unknown_error">Error desconocido</string>
+  <string name="menu_webbrowser_login">Iniciar sesión automáticamente</string>
+  <string name="activity_settings_translate_title">Traducir</string>
+  <string name="error_not_found_in_db_course">No se pudo encontrar el curso en la base de datos!</string>
+  <string name="msg_enter_msg">Introduzca su mensaje</string>
+  <string name="msg_no_contacs">No hay contactos</string>
+  <string name="msg_no_contents">No hay contenido</string>
+  <string name="msg_no_events">No hay eventos</string>
+  <string name="msg_no_forum">No hay foros</string>
+  <string name="msg_no_mssgs">No hay mensajes</string>
+  <string name="msg_no_notif">No hay notificaciones</string>
+  <string name="msg_no_people">No hay gente</string>
+  <string name="msg_no_topics">No hay temas</string>
+  <string name="tab_calendar">Calendario</string>
+  <string name="tab_contents">Contenidos</string>
+  <string name="tab_fav_courses">Cursos Favoritos</string>
+  <string name="tab_forums">Foros</string>
+  <string name="tab_header">Mis Cursos</string>
+  <string name="tab_participants">Participantes</string>
+  <string name="title_calendar">Calendario</string>
+  <string name="title_home">Inicio de Moodle</string>
+  <string name="title_messaging">Mensajes</string>
+  <string name="txt_courses">Cursos</string>
+  <string name="txt_no_posts">No hay publicaciones</string>
+  <string-array name="moodle_menu_items">
+    <item>Cursos</item>
+    <item>Mensajes</item>
+    <item>Contactos</item>
+    <item>Calendario</item>
+    <item>Foros</item>
+    <item>Notificaciones</item>
+  </string-array>
+  <string-array name="moodle_app_menu_items">
+    <item>Solicitar característica</item>
+    <item>Configuración</item>
+    <item>Agregar cuenta</item>
+
+  </string-array>
 </resources>

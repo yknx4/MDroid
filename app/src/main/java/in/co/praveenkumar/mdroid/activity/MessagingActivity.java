@@ -1,5 +1,9 @@
 package in.co.praveenkumar.mdroid.activity;
 
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+
 import in.co.praveenkumar.R;
 import in.co.praveenkumar.mdroid.fragment.MessageListingFragment;
 import in.co.praveenkumar.mdroid.fragment.MessagingFragment;
@@ -7,10 +11,6 @@ import in.co.praveenkumar.mdroid.helper.AppInterface;
 import in.co.praveenkumar.mdroid.helper.AppInterface.UserIdInterface;
 import in.co.praveenkumar.mdroid.helper.ApplicationClass;
 import in.co.praveenkumar.mdroid.helper.Param;
-
-import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 
 public class MessagingActivity extends BaseNavigationActivity implements
         UserIdInterface, AppInterface.FragmentChanger {
@@ -31,7 +31,7 @@ public class MessagingActivity extends BaseNavigationActivity implements
         // Set fragment
         changeFragment(FRAG_MESSAGE_LIST, false);
 
-        getSupportActionBar().setTitle("Messaging");
+        getSupportActionBar().setTitle(R.string.title_messaging);
         getSupportActionBar().setIcon(R.drawable.icon_message);
     }
 

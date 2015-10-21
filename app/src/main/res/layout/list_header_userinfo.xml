@@ -120,7 +120,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:padding="8dp"
-        android:text="Courses"
+        android:text="@string/txt_courses"
         android:textSize="18sp"
         android:textStyle="bold" />
 

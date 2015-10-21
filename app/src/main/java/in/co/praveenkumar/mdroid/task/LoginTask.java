@@ -1,5 +1,12 @@
 package in.co.praveenkumar.mdroid.task;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+
 import in.co.praveenkumar.R;
 import in.co.praveenkumar.mdroid.activity.CourseActivity;
 import in.co.praveenkumar.mdroid.activity.WebservicesoffActivity;
@@ -11,12 +18,6 @@ import in.co.praveenkumar.mdroid.moodlerest.MoodleRestSiteInfo;
 import in.co.praveenkumar.mdroid.moodlerest.MoodleRestToken;
 import in.co.praveenkumar.mdroid.moodlerest.MoodleRestUserLevelXP;
 import in.co.praveenkumar.mdroid.view.LoginStatusViewHolder;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 public class LoginTask extends AsyncTask<String, String, Boolean> {
 	String username;
@@ -205,6 +206,17 @@ public class LoginTask extends AsyncTask<String, String, Boolean> {
 		this.userlxp.save();
 
 
+		try {
+			BadgesSyncTask bst = new BadgesSyncTask(siteInfo);
+			if (bst.syncBadges()) {
+				if (bst.newBadges) {
+					//TODO: NOTIFY ABOUT NEW BADGES
+				}
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		publishProgress("\n" + context.getString(R.string.login_prog_welcome)
 				+ " " + siteInfo.getFullname() + "!\n");

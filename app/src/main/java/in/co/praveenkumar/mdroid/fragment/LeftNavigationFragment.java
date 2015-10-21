@@ -1,24 +1,5 @@
 package in.co.praveenkumar.mdroid.fragment;
 
-import in.co.praveenkumar.R;
-import in.co.praveenkumar.mdroid.activity.CalendarActivity;
-import in.co.praveenkumar.mdroid.activity.ContactActivity;
-import in.co.praveenkumar.mdroid.activity.CourseActivity;
-import in.co.praveenkumar.mdroid.activity.DonationActivity;
-import in.co.praveenkumar.mdroid.activity.ForumActivity;
-import in.co.praveenkumar.mdroid.activity.LoginActivity;
-import in.co.praveenkumar.mdroid.activity.MessagingActivity;
-import in.co.praveenkumar.mdroid.activity.NotificationActivity;
-import in.co.praveenkumar.mdroid.activity.SettingsActivity;
-import in.co.praveenkumar.mdroid.helper.AppInterface.DrawerStateInterface;
-import in.co.praveenkumar.mdroid.helper.ImageDecoder;
-import in.co.praveenkumar.mdroid.helper.SessionSetting;
-import in.co.praveenkumar.mdroid.model.MoodleSiteInfo;
-import in.co.praveenkumar.mdroid.model.MoodleUserLevelXp;
-
-import java.io.File;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -38,6 +19,25 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.util.List;
+
+import in.co.praveenkumar.R;
+import in.co.praveenkumar.mdroid.activity.CalendarActivity;
+import in.co.praveenkumar.mdroid.activity.ContactActivity;
+import in.co.praveenkumar.mdroid.activity.CourseActivity;
+import in.co.praveenkumar.mdroid.activity.DonationActivity;
+import in.co.praveenkumar.mdroid.activity.ForumActivity;
+import in.co.praveenkumar.mdroid.activity.LoginActivity;
+import in.co.praveenkumar.mdroid.activity.MessagingActivity;
+import in.co.praveenkumar.mdroid.activity.NotificationActivity;
+import in.co.praveenkumar.mdroid.activity.SettingsActivity;
+import in.co.praveenkumar.mdroid.helper.AppInterface.DrawerStateInterface;
+import in.co.praveenkumar.mdroid.helper.ImageDecoder;
+import in.co.praveenkumar.mdroid.helper.SessionSetting;
+import in.co.praveenkumar.mdroid.model.MoodleSiteInfo;
+import in.co.praveenkumar.mdroid.model.MoodleUserLevelXp;
+
 @SuppressLint("InlinedApi")
 public class LeftNavigationFragment extends Fragment {
 	DrawerStateInterface drawerState;
@@ -48,10 +48,12 @@ public class LeftNavigationFragment extends Fragment {
 	SessionSetting session;
 	List<MoodleUserLevelXp> levelsxps;
 
-	String[] moodleMenuItems = new String[] { "Courses", "Messaging",
-			"Contacts", "Calender", "Forums", "Notifications" };
-	String[] appMenuItems = new String[] { "Request features", "Settings",
-			"Add account" };
+	String[] moodleMenuItems;
+
+
+	String[] appMenuItems;
+
+
 
 	int[] moodleMenuIcons = new int[] { R.drawable.icon_school_greyscale,
 			R.drawable.icon_message_greyscale,
@@ -64,6 +66,15 @@ public class LeftNavigationFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+
+
+//		moodleMenuItems = new String[]{"Courses", "Messaging",
+//				"Contacts", "Calender", "Forums", "Notifications"};
+//		appMenuItems = new String[]{"Request features", "Settings",
+//				"Add account"};
+		moodleMenuItems = getResources().getStringArray(R.array.moodle_menu_items);
+		appMenuItems = getResources().getStringArray(R.array.moodle_app_menu_items);
+
 
 		View rootView = inflater.inflate(R.layout.frag_left_navigation,
 				container, false);
@@ -247,6 +258,11 @@ public class LeftNavigationFragment extends Fragment {
 			// Assign values
 			switch (type) {
 			case TYPE_ACCOUNT:
+				viewHolder.userimage.setImageResource(R.drawable.person);
+				viewHolder.playerlevel.setVisibility(View.GONE);
+				viewHolder.playerxp.setVisibility(View.GONE);
+
+
 				viewHolder.userfullname.setText(sites.get(position)
 						.getFullname());
 				viewHolder.sitename.setText(sites.get(position).getSitename());

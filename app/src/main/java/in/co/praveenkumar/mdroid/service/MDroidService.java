@@ -1,28 +1,5 @@
 package in.co.praveenkumar.mdroid.service;
 
-import in.co.praveenkumar.R;
-import in.co.praveenkumar.mdroid.activity.NotificationActivity;
-import in.co.praveenkumar.mdroid.helper.ImageDecoder;
-import in.co.praveenkumar.mdroid.model.MoodleCourse;
-import in.co.praveenkumar.mdroid.model.MoodleDiscussion;
-import in.co.praveenkumar.mdroid.model.MoodleForum;
-import in.co.praveenkumar.mdroid.model.MoodleSiteInfo;
-import in.co.praveenkumar.mdroid.model.MoodleUserLevelXp;
-import in.co.praveenkumar.mdroid.moodlerest.MoodleRestUserLevelXP;
-import in.co.praveenkumar.mdroid.task.ContactSyncTask;
-import in.co.praveenkumar.mdroid.task.CourseContentSyncTask;
-import in.co.praveenkumar.mdroid.task.DiscussionSyncTask;
-import in.co.praveenkumar.mdroid.task.EventSyncTask;
-import in.co.praveenkumar.mdroid.task.ForumSyncTask;
-import in.co.praveenkumar.mdroid.task.MessageSyncTask;
-import in.co.praveenkumar.mdroid.task.PostSyncTask;
-import in.co.praveenkumar.mdroid.task.UserSyncTask;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -38,11 +15,32 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.annotation.RequiresPermission;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import in.co.praveenkumar.R;
+import in.co.praveenkumar.mdroid.activity.NotificationActivity;
+import in.co.praveenkumar.mdroid.helper.ImageDecoder;
+import in.co.praveenkumar.mdroid.model.MoodleCourse;
+import in.co.praveenkumar.mdroid.model.MoodleDiscussion;
+import in.co.praveenkumar.mdroid.model.MoodleForum;
+import in.co.praveenkumar.mdroid.model.MoodleSiteInfo;
+import in.co.praveenkumar.mdroid.model.MoodleUserLevelXp;
+import in.co.praveenkumar.mdroid.moodlerest.MoodleRestUserLevelXP;
+import in.co.praveenkumar.mdroid.task.BadgesSyncTask;
+import in.co.praveenkumar.mdroid.task.ContactSyncTask;
+import in.co.praveenkumar.mdroid.task.CourseContentSyncTask;
+import in.co.praveenkumar.mdroid.task.DiscussionSyncTask;
+import in.co.praveenkumar.mdroid.task.EventSyncTask;
+import in.co.praveenkumar.mdroid.task.ForumSyncTask;
+import in.co.praveenkumar.mdroid.task.MessageSyncTask;
+import in.co.praveenkumar.mdroid.task.PostSyncTask;
+import in.co.praveenkumar.mdroid.task.UserSyncTask;
 
 public class MDroidService extends Service {
 	final String DEBUG_TAG = "MDroid Services";
@@ -198,58 +196,75 @@ public class MDroidService extends Service {
 		}
 
 		private void syncLevel(MoodleSiteInfo site){
-			Log.d(this.getClass().getSimpleName(),"Updating Level");
-			int level = -1;
-			int exp = -1;
-			long userid = site.getUserid();
+			try {
+				Log.d(this.getClass().getSimpleName(), "Updating Level");
 
-			MoodleUserLevelXp ulv = new MoodleUserLevelXp();
+				try {
+					BadgesSyncTask bst = new BadgesSyncTask(site);
+					if (bst.syncBadges()) {
+						if (bst.newBadges) {
+							//TODO: NOTIFY ABOUT NEW BADGES
+						}
 
-			List<MoodleUserLevelXp> lvl =  MoodleUserLevelXp.find(MoodleUserLevelXp.class, "userid = ?", String.valueOf(userid));
-			if(lvl.size()>0){
-				ulv = lvl.get(lvl.size()-1);
-				level = ulv.getLevel();
-				exp = ulv.getXp();
-			}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				int level = -1;
+				int exp = -1;
+				long userid = site.getUserid();
+
+				MoodleUserLevelXp ulv = new MoodleUserLevelXp();
+
+				List<MoodleUserLevelXp> lvl = MoodleUserLevelXp.find(MoodleUserLevelXp.class, "userid = ?", String.valueOf(userid));
+				if (lvl.size() > 0) {
+					ulv = lvl.get(lvl.size() - 1);
+					level = ulv.getLevel();
+					exp = ulv.getXp();
+				}
 
 
-			MoodleRestUserLevelXP localMoodleRestUserLevelXP = new MoodleRestUserLevelXP(site.getSiteurl(), site.getToken());
-			int newlevel = localMoodleRestUserLevelXP.getLevel(1);
-			int newExp = localMoodleRestUserLevelXP.getExperience(1);
-			if(level>0 && newlevel>level){
+				MoodleRestUserLevelXP localMoodleRestUserLevelXP = new MoodleRestUserLevelXP(site.getSiteurl(), site.getToken());
+				int newlevel = localMoodleRestUserLevelXP.getLevel(1);
+				int newExp = localMoodleRestUserLevelXP.getExperience(1);
+				if (level > 0 && newlevel > level) {
 //				Toast.makeText(getBaseContext(), "You've reached level: "+newlevel, Toast.LENGTH_SHORT).show();
-				Notification notification  = new NotificationCompat.Builder(getBaseContext())
-						.setCategory(Notification.CATEGORY_EVENT)
-						.setContentTitle("Level UP!")
-						.setContentText("You've reached level: " + newlevel)
-						.setPriority(NotificationCompat.PRIORITY_HIGH)
-						.setSmallIcon(R.mipmap.icon_launcher)
-						.setAutoCancel(true)
-						.setVisibility(NotificationCompat.VISIBILITY_PUBLIC).build();
-				NotificationManager notificationManager =
-						(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-				notificationManager.notify(0, notification );
+					Notification notification = new NotificationCompat.Builder(getBaseContext())
+							.setCategory(Notification.CATEGORY_EVENT)
+							.setContentTitle("Level UP!")
+							.setContentText("You've reached level: " + newlevel)
+							.setPriority(NotificationCompat.PRIORITY_HIGH)
+							.setSmallIcon(R.mipmap.icon_launcher)
+							.setAutoCancel(true)
+							.setVisibility(NotificationCompat.VISIBILITY_PUBLIC).build();
+					NotificationManager notificationManager =
+							(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+					notificationManager.notify(0, notification);
 
-			}
-			if(exp>0 && newExp>exp){
+				}
+				if (exp > 0 && newExp > exp) {
 //				Toast.makeText(getBaseContext(), "You've got "+(newExp-exp)+" points of experience.", Toast.LENGTH_SHORT).show();
-				Notification notification  = new NotificationCompat.Builder(getBaseContext())
-						.setCategory(Notification.CATEGORY_EVENT)
-						.setContentTitle("Experiencie Gain!")
-						.setContentText("You've got "+(newExp-exp)+" points of experience.")
-						.setPriority(NotificationCompat.PRIORITY_HIGH)
-						.setSmallIcon(R.mipmap.icon_launcher)
-						.setAutoCancel(true)
-						.setVisibility(NotificationCompat.VISIBILITY_PUBLIC).build();
-				NotificationManager notificationManager =
-						(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-				notificationManager.notify(1, notification );
+					Notification notification = new NotificationCompat.Builder(getBaseContext())
+							.setCategory(Notification.CATEGORY_EVENT)
+							.setContentTitle("Experiencie Gain!")
+							.setContentText("You've got " + (newExp - exp) + " points of experience.")
+							.setPriority(NotificationCompat.PRIORITY_HIGH)
+							.setSmallIcon(R.mipmap.icon_launcher)
+							.setAutoCancel(true)
+							.setVisibility(NotificationCompat.VISIBILITY_PUBLIC).build();
+					NotificationManager notificationManager =
+							(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+					notificationManager.notify(1, notification);
+				}
+				ulv = new MoodleUserLevelXp();
+				ulv.setUserid(site.getUserid());
+				ulv.setLevel(newlevel);
+				ulv.setXp(newExp);
+				ulv.save();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			ulv = new MoodleUserLevelXp();
-			ulv.setUserid(site.getUserid());
-			ulv.setLevel(newlevel);
-			ulv.setXp(newExp);
-			ulv.save();
 		}
 
 		/**

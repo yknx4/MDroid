@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:background="@color/white"
-                android:hint="Enter your message"
+                android:hint="@string/msg_enter_msg"
                 android:maxHeight="160dp"
                 android:minHeight="45dp"
                 android:paddingBottom="8dp"
@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:text="No Messages here"
+                android:text="@string/msg_no_mssgs"
                 android:textColor="@color/grey8"
                 android:textSize="20sp" />
         </LinearLayout>

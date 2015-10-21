@@ -14,6 +14,16 @@ public class MoodleUserLevelXp
     int userid;
     @SerializedName("xp")
     int xp;
+    @SerializedName("site_id")
+    long siteId;
+
+    public long getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(long siteId) {
+        this.siteId = siteId;
+    }
 
     public int getLevel()
     {

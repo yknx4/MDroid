@@ -1,9 +1,10 @@
 package in.co.praveenkumar.mdroid.activity;
 
+import android.os.Bundle;
+
 import in.co.praveenkumar.R;
 import in.co.praveenkumar.mdroid.helper.ApplicationClass;
 import in.co.praveenkumar.mdroid.helper.Param;
-import android.os.Bundle;
 
 public class CalendarActivity extends BaseNavigationActivity {
 
@@ -17,7 +18,7 @@ public class CalendarActivity extends BaseNavigationActivity {
 		((ApplicationClass) getApplication())
 				.sendScreen(Param.GA_SCREEN_CALENDAR);
 
-		getSupportActionBar().setTitle("Calendar");
+		getSupportActionBar().setTitle(R.string.title_calendar);
 		getSupportActionBar().setIcon(R.drawable.icon_today);
 	}
 }
